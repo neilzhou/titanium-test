@@ -1,0 +1,6 @@
+<Alloy>
+	<Window id="win" class="container">
+	  <Label text="activity indicator page"></Label>
+	  <ActivityIndicator id="xmlActivityIndicator" style="Titanium.UI.ActivityIndicatorStyle.BIG_DARK" message="Loading... by XML element"></ActivityIndicator>>
+	</Window>
+</Alloy>

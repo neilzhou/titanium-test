@@ -1,0 +1,46 @@
+<Alloy>
+	<Collection src='book' id='cBook' instance="true" />
+	<Collection src="book" />
+	<Model src="book" id="book2" instance="true" />
+	<Window class="container" id="win" layout="vertical">
+		<Label text="Heelo bind data"></Label>
+		<TableView id="table" dataCollection="book" dataTransform="transformCallback" dataFilter="filterCallback" height="Ti.UI.SIZE">
+		</TableView>
+		<Label text="Heelo bind data"></Label>
+		<TableView id="table" dataCollection="book" dataTransform="transformCallback" dataFilter="filterCallback" height="Ti.UI.SIZE">
+			<TableViewRow title="{title}"></TableViewRow>
+		</TableView>
+		<Label text="{book.title}"></Label>
+		<Label text="{$.book2.title}"></Label>
+		<ScrollView dataCollection="$.cBook" dataTransform="transformCallback" backgroundColor="red" dataFilter="filterCallback" layout="vertical" height="200">
+			<Label text="book label"></Label>
+			<Label text="{title}"></Label>
+			<Label text="{author}"></Label>
+			<Label text="{custom}"></Label>
+		</ScrollView>
+		<ScrollView dataCollection="book" dataTransform="transformCallback" backgroundColor="green" dataFilter="filterCallback" layout="vertical" height="200">
+			<View layout="vertical" height="200">
+				<Label text="book label"></Label>
+				<Label text="{title}"></Label>
+				<Label text="{author}"></Label>
+				<Label text="{custom}"></Label>
+			</View>
+		</ScrollView>
+		
+		<View dataCollection="book" dataTransform="transformCallback" backgroundColor="blue" dataFilter="filterCallback" layout="vertical" height="Ti.UI.SIZE">
+			<Require src="test_models/view_bind" id="view_bind" />
+		</View>
+		
+		<!-- <View dataCollection="dBook"  backgroundColor="white" layout="vertical" height="Ti.UI.SIZE" id="vBind">
+			<Require src="test_models/view_bind" id="view_bind2" />
+		</View> -->
+		
+		
+		<ScrollView dataCollection="book" layout="vertical" height="Ti.UI.SIZE" backgroundColor="yellow">
+			<Require src="test_models/view_bind" id="view_bind3" />
+		</ScrollView>
+		
+		
+		
+	</Window>
+</Alloy>

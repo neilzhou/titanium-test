@@ -1,0 +1,7 @@
+<Alloy>
+	<Window class="container" id="win">
+	  <Label text="test 2d matrix page"></Label>
+	  <Label text="Hello 2d matrix" id="effectLabel"/>
+	  <Button id="rotateButton" title="rotate the label"></Button>
+	</Window>
+</Alloy>

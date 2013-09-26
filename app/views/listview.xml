@@ -1,0 +1,5 @@
+<Alloy>
+	<Window id="win2" backgroundColor="white">
+		<Label>Heelo List</Label>
+	</Window>
+</Alloy>

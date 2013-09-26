@@ -1,0 +1,14 @@
+<Alloy>
+	<Window id="win" class="container vertical" height="Ti.UI.FILL">
+    <Label>Test bind data cross view by controller(by event listener)</Label>
+    <View id="authorView" class="horizontal">
+      <Label>Author:</Label>
+      <Label id="authorLabel" />
+    </View>
+    <View id="titleView" class="horizontal">
+    	<Label>Title:</Label>
+    	<Label id="titleLabel"></Label>
+    </View>
+    <Button title="Go to anothor window" id="openWindowButton"></Button>
+	</Window>
+</Alloy>

@@ -1,0 +1,9 @@
+<Alloy>
+	<Window id="win" layout="vertical">
+		<Require src="test_layout/header" id="headerRequire"></Require>
+		<View id="body"  height="Ti.UI.SIZE" backgroundColor="red">
+			<Label text="Body"></Label>
+		</View>
+		<Require src="test_layout/footer" id="footerRequire"></Require>
+	</Window>
+</Alloy>

@@ -1,0 +1,6 @@
+<Alloy>
+	<Window id="win" class="container">
+	  <Label id="coords"></Label>
+	  <Button id="openButton"></Button>
+	</Window>
+</Alloy>

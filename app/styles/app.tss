@@ -1,0 +1,74 @@
+".bluetext" : {
+	color: 'blue'
+}
+
+".orangetext" : {
+	color: 'orange'
+}
+
+".shadow" : {
+	shadowColor: '#88f',
+	shadowOffet: {x:1, y:3}
+}
+
+".ldpi" : {
+	font: {fontSize: '9dp', fontWeight: 'normal'}
+}
+
+".mdpi" : {
+	font: {fontSize: '12dp', fontWeight: 'normal'}
+}
+
+".hdpi" : {
+	font: {fontSize: '18dp', fontWeight: 'bold'}
+}
+
+".xhdpi" : {
+	font: {fontSize: '24dp', fontWeight: 'bold'}
+}
+
+"Label" : {
+	font: {fontSize: '14dp', fontWeight: 'normal'},
+	shadow: {},
+	color: 'black'
+}
+
+".rude_button" : {
+	title: 'Go Away'
+}
+
+".nice_button" : {
+	title: 'Please Close'
+}
+
+"Button" : {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE
+}
+
+".tiny_win" : {
+	height: '150dp',
+	width: '200dp',
+	backgroundColor: 'blue'
+}
+
+".big_win" : {
+	height: '300dp',
+	width: '400dp',
+	backgroundColor: 'red'
+}
+
+"Window": {
+	layout: 'vertical',
+	backgroundColor:'white'
+}
+
+".vertical":{
+  layout: 'vertical',
+  height: Ti.UI.SIZE
+}
+
+".horizontal":{
+  layout: 'horizontal',
+  height: Ti.UI.SIZE
+}

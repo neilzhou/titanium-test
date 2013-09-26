@@ -1,0 +1,10 @@
+<Alloy>
+	<TabGroup id="win">
+		<Tab id="leftTab">
+			<Require src="requires/rss" id="rssTab" para="test para"  pro="test" prop="{'a':'b', 'b':'c'}"></Require>
+		</Tab>
+		<Tab id="rightTab">
+			<Require src="requires/about" type="view" id="aboutTab"></Require>
+		</Tab>
+	</TabGroup>>
+</Alloy>

@@ -1,0 +1,5 @@
+<Alloy>
+	<Window id="rssWin">
+		<WebView id="rssView"></WebView>
+	</Window>
+</Alloy>

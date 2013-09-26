@@ -1,0 +1,6 @@
+<Alloy>
+	<Window id="win" class="container">
+	  <Label text="heool manual from"></Label>
+	  <Button id="backToManualSetting"></Button>
+	</Window>
+</Alloy>

@@ -1,0 +1,7 @@
+<Alloy>
+	<Window class="container" layout="vertical" id="win">
+		<Label>Hello Model!</Label>
+		<TextField height="Ti.UI.SIZE" width="Ti.UI.FILL"></TextField>
+		<ScrollView id="mainScrollView" layout="vertical"></ScrollView>
+	</Window>
+</Alloy>

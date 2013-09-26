@@ -1,0 +1,7 @@
+<Alloy>
+	<View id="view_bind" layout="vertical" height="Ti.UI.SIZE">
+		<Label text="{title}"></Label>
+		<Label text="{author}"></Label>
+		<Label text="{custom}"></Label>
+	</View>
+</Alloy>

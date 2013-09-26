@@ -1,0 +1,8 @@
+<Alloy>
+	<Window class="container" id="win" layout="vertical" backgroundColor="white">
+		<Label>Require widget</Label>
+		<Require src="requires/sample"></Require>
+		<!-- <Require type="widget" src="com.appcelerator.searchForBooks" id="sfb"></Require>
+		<TableView id="tableView"></TableView> -->
+	</Window>
+</Alloy>

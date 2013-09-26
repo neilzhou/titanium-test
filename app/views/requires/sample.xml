@@ -1,0 +1,8 @@
+<Alloy>
+	<View layout="vertical" id="sample" height="Ti.UI.SIZE">
+		<Label>Test Sample Label</Label>
+	</View>
+	<View layout="vertical" id="sample2" height="Ti.UI.SIZE">
+		<Label>Test Sample Label22</Label>
+	</View>
+</Alloy>

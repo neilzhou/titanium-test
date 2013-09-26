@@ -1,0 +1,21 @@
+<Alloy>
+	<Window id="win">
+		<ListView id="listView" defaultItemTemplate="template" sectionCount="8" showVerticalScrollIndicator="false" backgroundColor="#f5f5f5">
+	        <Templates>
+	            <ItemTemplate name="template">
+	                <Label bindId="info" class="produc-category-title" id="showCategory2" />
+	            </ItemTemplate>
+	        </Templates>
+	        <ListSection>
+	            <ListItem info:text="食品饮料" />
+	            <ListItem info:text="厨房用品" />
+	            <ListItem info:text="个护化妆" />
+	            <ListItem info:text="运动健康" />
+	            <ListItem info:text="母婴玩具" />
+	            <ListItem info:text="办公用品" />
+	            <ListItem info:text="家用电器" />
+	            <ListItem info:text="服饰鞋帽" />
+	        </ListSection>
+	    </ListView>
+	</Window>
+</Alloy>

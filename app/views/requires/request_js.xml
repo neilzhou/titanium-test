@@ -1,0 +1,5 @@
+<Alloy>
+	<Window class="container" id="win" fullscreen="true" layout="vertical" backgroundColor="white">
+		<Label>Require JS</Label>
+	</Window>
+</Alloy>

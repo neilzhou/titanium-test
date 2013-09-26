@@ -1,0 +1,5 @@
+<Alloy>
+	<Window id="win" class="container">
+	  <Label text="test network index"></Label>
+	</Window>
+</Alloy>

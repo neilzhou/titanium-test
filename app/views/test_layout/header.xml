@@ -1,0 +1,7 @@
+<Alloy>
+	<View class="container" id="header" height="Ti.UI.SIZE" layout="vertical" backgroundColor="yellow">
+		<Label id="lHeader" text="header"></Label>
+		<Button title="back to homepage" id="backButton"></Button>
+		<Button title="go Require View Button" id="goRequireViewButton"></Button>
+	</View>
+</Alloy>

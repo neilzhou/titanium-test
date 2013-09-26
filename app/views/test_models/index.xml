@@ -1,0 +1,5 @@
+<Alloy>
+	<Window id="win">
+		<Label>You can find the examples on Alloy/test/apps/models/*</Label>
+	</Window>
+</Alloy>

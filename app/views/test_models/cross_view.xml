@@ -1,0 +1,6 @@
+<Alloy>
+	<Window id="win" class="container vertical" width="200" height="200" opacity="0.1">
+	  <Label text="Opened cross view"></Label>
+	  <Button id="changeCustomModelButton" title="change globals book model"></Button>
+	</Window>
+</Alloy>
