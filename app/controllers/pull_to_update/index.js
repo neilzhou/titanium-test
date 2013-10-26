@@ -19,10 +19,10 @@ var PullToUpdate = {
     var refresh = false;
 
     
-
+    $.pullView.visible = false;
     var init = setInterval(function(e){
 
-       Ti.API.info('init offset:' + offset);
+       // Ti.API.info('init offset:' + offset);
 
         if (offset != 0) {
 
@@ -36,6 +36,7 @@ var PullToUpdate = {
 
     
 
+
     PullToUpdate.scrollView.addEventListener('scroll', function (e) {
 
       // Ti.API.info('scroll e:' + JSON.stringify(e));
@@ -46,65 +47,66 @@ var PullToUpdate = {
 
       };
       
+     
       // fix the section of pullview is blank when user just scroll from bottom to top because of pullview is not visible..
-
-      if(offset < 60 && $.pullView.visible == false){
-
-        PullToUpdate.scrollView.scrollTo(0, 60);
-
-      }
-
-      // if pull view is not visible , it not need to do the codes below.
-      if($.pullView.visible == 'false' || $.pullView.visible == false){
-        return ;
-      }
-
-      if(offset <= 5 && !pulling && !refresh){
-
-        pulling = true;
-
-        
-
-        var t = Ti.UI.create2DMatrix();
-
-        t = t.rotate(-180);
-
-        $.arrowView.animate({
-
-          transform: t,
-
-          duration: 180
-
-        });
-
-        $.statusLabel.text = '松开刷新';
-
-      } else if(pulling && (offset > 5 && offset < 60) && !refresh){
-
-        pulling = false;
-
-        var t = Ti.UI.create2DMatrix();
-
-        $.arrowView.animate({
-
-          transform: t,
-
-          duration: 180
-
-        });
-
-        $.statusLabel.text = '下拉刷新';
-
-      }
+     
+           if(offset < 60 && $.pullView.visible == false){
+     
+             PullToUpdate.scrollView.scrollTo(0, 60);
+     
+           }
+     
+           // if pull view is not visible , it not need to do the codes below.
+           if($.pullView.visible == 'false' || $.pullView.visible == false){
+             return ;
+           }
+     
+           if(offset <= 5 && !pulling && !refresh){
+     
+             pulling = true;
+     
+             
+     
+             var t = Ti.UI.create2DMatrix();
+     
+             t = t.rotate(-180);
+     
+             $.arrowView.animate({
+     
+               transform: t,
+     
+               duration: 180
+     
+             });
+     
+             $.statusLabel.text = '松开刷新';
+     
+           } else if(pulling && (offset > 5 && offset < 60) && !refresh){
+     
+             pulling = false;
+     
+             var t = Ti.UI.create2DMatrix();
+     
+             $.arrowView.animate({
+     
+               transform: t,
+     
+               duration: 180
+     
+             });
+     
+             $.statusLabel.text = '下拉刷新';
+     
+           }
+     
       
 
     });
 
     
-
     PullToUpdate.scrollView.addEventListener('touchstart', function (e) {
 
-      Ti.API.info('scrollstart offset:' + offset + ', e:' + JSON.stringify(e));
+      // Ti.API.info('scrollstart offset:' + offset + ', e:' + JSON.stringify(e));
 
       $.pullView.visible = true;
 
@@ -116,7 +118,7 @@ var PullToUpdate = {
 
     PullToUpdate.scrollView.addEventListener('scrollend', function (e) {
 
-      Ti.API.info('scrollend offset:' + offset + ', e:' + JSON.stringify(e));
+      // Ti.API.info('scrollend offset:' + offset + ', e:' + JSON.stringify(e));
 
      if(offset < 60 && !refresh){
 
@@ -142,7 +144,7 @@ var PullToUpdate = {
 
     PullToUpdate.scrollView.addEventListener(event1, function(e){
 
-      Ti.API.info('drag end offset:' + offset + ' e:' + JSON.stringify(e));
+      // Ti.API.info('drag end offset:' + offset + ' e:' + JSON.stringify(e));
 
       if(offset <= 5){
 
@@ -152,7 +154,7 @@ var PullToUpdate = {
 
         
 
-        $.statusLabel.text = '正在更新';
+        $.statusLabel.text = '正在刷新';
 
         
 
@@ -161,7 +163,8 @@ var PullToUpdate = {
           refresh = false;
 
           if(offset < 60){
-
+            $.pullView.visible = false;
+            $.statusLabel.text = '下拉刷新';
             $.arrowView.transform = Ti.UI.create2DMatrix();
 
             PullToUpdate.scrollView.scrollTo(0, 60);
@@ -185,6 +188,7 @@ var PullToUpdate = {
       }
 
     });
+
 
   },
 

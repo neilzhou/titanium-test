@@ -11,53 +11,55 @@
 
  
 
-  <View backgroundColor="yellow" height="30"></View>
+  <View backgroundColor="yellow" height="200"></View>
 
-  <View backgroundColor="red" height="30"></View>
+  <View backgroundColor="red" height="200"></View>
+ 
 
-  <View backgroundColor="yellow" height="30"></View>
+  <View backgroundColor="yellow" height="200"></View>
 
-  <View backgroundColor="red" height="30"></View>
+  <View backgroundColor="red" height="200"></View>
+ 
 
-  <View backgroundColor="yellow" height="30"></View>
+  <View backgroundColor="yellow" height="200"></View>
 
-  <View backgroundColor="red" height="30"></View>
+  <View backgroundColor="red" height="200"></View>
+ 
 
-  <View backgroundColor="yellow" height="30"></View>
+  <View backgroundColor="yellow" height="200"></View>
 
-  <View backgroundColor="red" height="30"></View>
+  <View backgroundColor="red" height="200"></View>
+ 
 
-  <View backgroundColor="yellow" height="30"></View>
+  <View backgroundColor="yellow" height="200"></View>
 
-  <View backgroundColor="red" height="30"></View>
+  <View backgroundColor="red" height="200"></View>
+ 
 
-  <View backgroundColor="yellow" height="30"></View>
+  <View backgroundColor="yellow" height="200"></View>
 
-  <View backgroundColor="red" height="30"></View>
+  <View backgroundColor="red" height="200"></View>
+ 
 
-  <View backgroundColor="yellow" height="30"></View>
+  <View backgroundColor="yellow" height="200"></View>
 
-  <View backgroundColor="red" height="30"></View>
+  <View backgroundColor="red" height="200"></View>
+ 
 
-  <View backgroundColor="yellow" height="30"></View>
+  <View backgroundColor="yellow" height="200"></View>
 
-  <View backgroundColor="red" height="30"></View>
+  <View backgroundColor="red" height="200"></View>
+ 
 
-  <View backgroundColor="yellow" height="30"></View>
+  <View backgroundColor="yellow" height="200"></View>
 
-  <View backgroundColor="red" height="30"></View>
+  <View backgroundColor="red" height="200"></View>
+ 
 
-  <View backgroundColor="yellow" height="30"></View>
+  <View backgroundColor="yellow" height="200"></View>
 
-  <View backgroundColor="red" height="30"></View>
+  <View backgroundColor="red" height="200"></View>
 
-  <View backgroundColor="yellow" height="30"></View>
-
-  <View backgroundColor="red" height="30"></View>
-
-  <View backgroundColor="yellow" height="30"></View>
-
-  <View backgroundColor="red" height="30"></View>
 
 </ScrollView>
 
