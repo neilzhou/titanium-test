@@ -17,6 +17,9 @@ var PullToUpdate = {
     var pulling = false;
 
     var refresh = false;
+    
+    var pullViewHeight = parseFloat($.pullView.height);
+    var refreshLimitOffset = pullViewHeight * .25;
 
     
     $.pullView.visible = false;
@@ -30,7 +33,7 @@ var PullToUpdate = {
 
         }
 
-        PullToUpdate.scrollView.scrollTo(0,60);
+        PullToUpdate.scrollView.scrollTo(0,pullViewHeight);
 
     },100);
 
@@ -50,9 +53,9 @@ var PullToUpdate = {
      
       // fix the section of pullview is blank when user just scroll from bottom to top because of pullview is not visible..
      
-           if(offset < 60 && $.pullView.visible == false){
+           if(offset < pullViewHeight && $.pullView.visible == false){
      
-             PullToUpdate.scrollView.scrollTo(0, 60);
+             PullToUpdate.scrollView.scrollTo(0, pullViewHeight);
      
            }
      
@@ -61,7 +64,7 @@ var PullToUpdate = {
              return ;
            }
      
-           if(offset <= 5 && !pulling && !refresh){
+           if(offset <= refreshLimitOffset && !pulling && !refresh){
      
              pulling = true;
      
@@ -81,7 +84,7 @@ var PullToUpdate = {
      
              $.statusLabel.text = '松开刷新';
      
-           } else if(pulling && (offset > 5 && offset < 60) && !refresh){
+           } else if(pulling && (offset > refreshLimitOffset && offset < pullViewHeight) && !refresh){
      
              pulling = false;
      
@@ -120,9 +123,9 @@ var PullToUpdate = {
 
       // Ti.API.info('scrollend offset:' + offset + ', e:' + JSON.stringify(e));
 
-     if(offset < 60 && !refresh){
+     if(offset < pullViewHeight && !refresh){
 
-       PullToUpdate.scrollView.scrollTo(0, 60);
+       PullToUpdate.scrollView.scrollTo(0, pullViewHeight);
 
        $.pullView.visible = false; 
 
@@ -146,7 +149,7 @@ var PullToUpdate = {
 
       // Ti.API.info('drag end offset:' + offset + ' e:' + JSON.stringify(e));
 
-      if(offset <= 5){
+      if(offset <= refreshLimitOffset){
 
         refresh = true;
 
@@ -162,12 +165,12 @@ var PullToUpdate = {
 
           refresh = false;
 
-          if(offset < 60){
+          if(offset < pullViewHeight){
             $.pullView.visible = false;
             $.statusLabel.text = '下拉刷新';
             $.arrowView.transform = Ti.UI.create2DMatrix();
 
-            PullToUpdate.scrollView.scrollTo(0, 60);
+            PullToUpdate.scrollView.scrollTo(0, pullViewHeight);
 
           }
 
@@ -175,13 +178,13 @@ var PullToUpdate = {
 
         
 
-      } else if(offset < 60){
+      } else if(offset < pullViewHeight){
 
-        PullToUpdate.scrollView.scrollTo(0, 60);
+        PullToUpdate.scrollView.scrollTo(0, pullViewHeight);
 
       }
 
-      if(offset >= 60 && !refresh){
+      if(offset >= pullViewHeight && !refresh){
 
         $.pullView.visible = false; // fix the pullview still visible when user just scroll from bottom to top.
 

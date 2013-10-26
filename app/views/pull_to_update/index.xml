@@ -1,9 +1,9 @@
 <Alloy>
 <Window class="container">
 <ScrollView id="scrollView" layout="vertical" contentHeight="auto" showVerticalScrollIndicator="true">
-  <View backgroundColor="#e2e7ed" height="60" id="pullView" visible="false">
+  <View backgroundColor="#e2e7ed" height="100" id="pullView" visible="false">
     <View id="arrowView" backgroundImage="/images/whiteArrow.png" width="23" height="60" bottom="10" left="20" borderColor="red" borderWidth="1"></View>
-    <Label id="statusLabel" text="下拉刷新" left="55" width="200" bottom="30" height="auto" color="#576c89" textAlign="center"></Label>
+    <Label id="statusLabel" text="下拉刷新" left="55" width="200" bottom="40" height="auto" color="#576c89" textAlign="center"></Label>
     <Label id="lastUpdateLabel" text="Last Updated" left="55" width="200" bottom="15" height="auto" textAlign="center" color="#576c89"></Label>
     <ActivityIndicator id="actInd" left="20" bottom="13" width="30" height="30"></ActivityIndicator>
     <View backgroundColor="#576c89" height="2" bottom="0"></View>
