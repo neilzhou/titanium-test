@@ -1,0 +1,7 @@
+<Alloy>
+  <Window id="win" layout="vertical">
+    <Button title="back to previous required this xml button" id="backButton"></Button>
+    <Button title="open new index required this xml button" id="openButton"></Button>
+    <Require src="test_requires/indicator" id="indicatorRequired"></Require>
+  </Window>
+</Alloy>

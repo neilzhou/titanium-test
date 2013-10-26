@@ -1,0 +1,6 @@
+<Alloy>
+	<Window id="win" layout="vertical" navBarHidden="true">
+	  <Button title="open another required this xml button" id="openNewButton"></Button>
+	  <Require src="test_requires/indicator" id="indicatorRequired"></Require>
+	</Window>
+</Alloy>

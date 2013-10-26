@@ -1,0 +1,12 @@
+<Alloy>
+	<View class="container" height="Ti.UI.SIZE">
+	  <View layout="horizontal" height="Ti.UI.SIZe">
+  	  <Button title="showIndicator" id="showIndicator" />
+  	  <Button title="showIndicator" id="hideIndicator" />
+	  </View>
+    <!-- <View id="indicatorView" height="Ti.UI.SIZE">
+      <Label text="Loading" color="#666"></Label>
+    </View> -->
+    <ActivityIndicator id="indicatorView" height="Ti.UI.SIZE" message="Loading"></ActivityIndicator>>
+	</View>
+</Alloy>

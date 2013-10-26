@@ -1,0 +1,5 @@
+<Alloy>
+  <Window id="win">
+    <Label>Window require xml test</Label>
+  </Window>
+</Alloy>

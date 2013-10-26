@@ -28,7 +28,9 @@ insertBtn('Test Network', 'network/index');
 insertBtn('Test Modules', 'test_modules/index');
 insertBtn('Test Sync', 'test_sync/index');
 insertBtn('Test Network', 'test_networks/index');
+insertBtn('Test Network', 'test_windows/index');
 insertBtn('Test UI elements', 'ui/index');
+insertBtn('Test require xml elements', 'test_requires/index');
 
 Ti.API.info('OS_IOS:' + OS_IOS);
 win.open();
