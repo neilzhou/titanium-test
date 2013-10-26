@@ -31,6 +31,7 @@ insertBtn('Test Network', 'test_networks/index');
 insertBtn('Test Network', 'test_windows/index');
 insertBtn('Test UI elements', 'ui/index');
 insertBtn('Test require xml elements', 'test_requires/index');
+insertBtn('Test Pull to update for scroll view', 'pull_to_update/index');
 
 Ti.API.info('OS_IOS:' + OS_IOS);
 win.open();
