@@ -8,6 +8,7 @@
 	"os:ios": {},
 	"os:mobileweb": {},
 	"dependencies": {
+    "com.muiNumInput.widget": "1.0",
 		"com.appcelerator.searchForBooks": "1.0"
 	}
 }

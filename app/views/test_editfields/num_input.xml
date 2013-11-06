@@ -1,0 +1,10 @@
+<Alloy>
+	<View class="container" layout="vertical">
+	  <ScrollView>
+	    <Widget src="com.muiNumInput.widget" id="widget1" />
+	    <Widget src="com.muiNumInput.widget" id="widget2" />
+	    <Widget src="com.muiNumInput.widget" id="widget3" />
+	  </ScrollView>
+	  <Button width="300" title="hide TextField" id="toggleButton"></Button>
+	</View>
+</Alloy>

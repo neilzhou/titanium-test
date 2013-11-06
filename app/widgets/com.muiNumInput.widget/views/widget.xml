@@ -1,0 +1,7 @@
+<Alloy>
+	<View layout="horizontal" id="widgetView">
+      <View id="decreaseButton" left="0" />
+      <TextField class="product-number" keyboardType="Ti.UI.KEYBOARD_NUMBER_PAD" id="numberText" bubbleParent="false" left="0" />
+      <View id="increaseButton" left="0" />
+  </View>
+</Alloy>

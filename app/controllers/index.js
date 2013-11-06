@@ -1,6 +1,6 @@
-var insertBtn = function(title, url){
+var insertBtn = function(title, url, params){
 	var importJs = require('import');
-	importJs.insertButton($.mainScrollView, title, url);
+	importJs.insertButton($.mainScrollView, title, url, params);
 };
 
 var win = $.win;
@@ -28,10 +28,11 @@ insertBtn('Test Network', 'network/index');
 insertBtn('Test Modules', 'test_modules/index');
 insertBtn('Test Sync', 'test_sync/index');
 insertBtn('Test Network', 'test_networks/index');
-insertBtn('Test Network', 'test_windows/index');
+insertBtn('Test windows', 'test_windows/index');
 insertBtn('Test UI elements', 'ui/index');
 insertBtn('Test require xml elements', 'test_requires/index');
 insertBtn('Test Pull to update for scroll view', 'pull_to_update/index');
+insertBtn('Test textfield element', 'layouts/index', {bodyUrl: 'test_editfields/show'});
 
 Ti.API.info('OS_IOS:' + OS_IOS);
 win.open();
