@@ -70,8 +70,10 @@ var show = {
       });    
       if (locating.checkProviderEnabled())
       {
+        alert('goto enable');
         locating.configureProvider().enable();
       }
+      alert('change title');
       this.title = 'Disable location';
     } else if(locating.currentStatus == locating.status.DISABLED){
       $.locationStatus.text = "location enable...";
@@ -91,7 +93,7 @@ var show = {
   },
   render: function(){
     $.locationStatus.text = "location initialize...";
-  
+    alert('in the lib');
     $.toggleEnable.addEventListener('click', show.onToggleEnableButtonClicked);
     
     setTimeout(function(){

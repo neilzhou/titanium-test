@@ -1,3 +1,4 @@
+/*
 var geo = {
   enabled: false,
   initialized: false,
@@ -28,14 +29,20 @@ var geo = {
   initialize: function(op){
     geo.initialized = true;
     Titanium.Geolocation.preferredProvider = Ti.Geolocation.PROVIDER_GPS;
-    Titanium.Geolocation.accuracy = Titanium.Geolocation.ACCURACY_BEST;
+    if(Ti.Platform.osname == 'ios'){
+      Titanium.Geolocation.accuracy = Titanium.Geolocation.ACCURACY_BEST;
+    } else {
+      Titanium.Geolocation.accuracy = Titanium.Geolocation.ACCURACY_HIGH;
+      alert('android accuracy is high');
+    }
     Titanium.Geolocation.distanceFilter = 0;
     
     geo.locationFailedCallback = op.locationFailedCallback ? op.locationFailedCallback : null;
     geo.locationSuccessCallback = op.locationSuccessCallback ? op.locationSuccessCallback : null;  
   }
 };
-
+*/
+var geo = require('/geo');
 var show = {
   onToggleButtonClicked: function(e){
     if($.tf1.visible == 'false' || $.tf1.visible == false){
@@ -104,17 +111,16 @@ var show = {
       geo.enable();
       this.title = 'Disable location';
     } else {
-            
+      geo.initialize({
+        locationFailedCallback: show.locationFailedCallback,
+        locationSuccessCallback: show.locationSuccessCallback,
+      });      
       geo.enable();
       this.title = 'Disable location';
     }
   },
   render: function(){
     $.locationStatus.text = "location enable...";
-    geo.initialize({
-      locationFailedCallback: show.locationFailedCallback,
-      locationSuccessCallback: show.locationSuccessCallback,
-    });
     $.toggleEnable.addEventListener('click', show.onToggleEnableButtonClicked);
     
     setTimeout(function(){

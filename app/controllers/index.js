@@ -33,6 +33,7 @@ insertBtn('Test UI elements', 'ui/index');
 insertBtn('Test require xml elements', 'test_requires/index');
 insertBtn('Test Pull to update for scroll view', 'pull_to_update/index');
 insertBtn('Test textfield element', 'layouts/index', {bodyUrl: 'test_editfields/show'});
+insertBtn('Test tabgoups', 'tab_groups/index');
 
 Ti.API.info('OS_IOS:' + OS_IOS);
 win.open();

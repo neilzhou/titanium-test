@@ -3,7 +3,13 @@
 	"env:development": {}, 
 	"env:test": {}, 
 	"env:production": {}, 
-	"os:android": {},
+	"os:android": {
+	  "android": true,
+    "blackberry": false,
+    "ios": false,
+    "mobileweb": false,
+    "tizen": false
+	},
 	"os:blackberry": {},
 	"os:ios": {},
 	"os:mobileweb": {},

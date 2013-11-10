@@ -13,8 +13,8 @@ var androidNetworkProvider = null, androidNetworkRule = null, androidGPSProvider
 // set the current co-ordinary when called change listener of geolocation.
 var currentCoords = null;
 
-var maxOlderTime = 90 * 1000; // max allowed 2 min which, TODO: will compare location with current location.
-var timeoutTime = 50 * 1000; // implement setTimeout to check whether locating is finished, if not neet to manually finish it.
+var maxOlderTime = 30 * 1000; // max allowed 2 min which, TODO: will compare location with current location.
+var timeoutTime = 5 * 60 * 1000; // implement setTimeout to check whether locating is finished, if not neet to manually finish it.
 
 // check whether the error is from GPS provider 
 var checkGPSError = function(event){
@@ -27,11 +27,12 @@ var checkGPSError = function(event){
 
 var onLocationUpdated = function(event)
 {
-  
+  alert('location event:' + JSON.stringify(event));
   // if is gps error, maybe gps is disabled, we will not listen to gps, and only acorrding to network. 
   if(checkGPSError(event)){
     return ;
   }
+  
   if (!event.success || event.error)
   {
     successCount = 0;
@@ -39,12 +40,14 @@ var onLocationUpdated = function(event)
     
     _.isFunction(config.locationErrorCallback) && config.locationErrorCallback(event);
     
+    // if error happens, disable and remove android configuration, should after callback.
+    locating.clear();
   }
   else
   {
-    // var moment = require('alloy/moment');
-    // var curDay = moment(event.coords.timestamp);
-    // alert('onLocationUpdated success current time:' + curDay.format());
+    var moment = require('alloy/moment');
+    var curDay = moment(event.coords.timestamp);
+    alert('onLocationUpdated success current time:' + curDay.format());
     successCount += 1;
     failureCount = 0;
     
@@ -54,26 +57,49 @@ var onLocationUpdated = function(event)
     
     currentCoords = event.coords;
       
-   // note, locationSuccessCallback must not be undefined.
-   _.isFunction(config.locationSuccessCallback) && config.locationSuccessCallback(event);
+    Ti.API.info('Coordination:');
+    Ti.API.info(JSON.stringify(event.coords));
+    alert('updated event:' + JSON.stringify(event));
+    alert('updated success count:' +successCount+ ', currentcorrds:' + JSON.stringify(currentCoords));
+    
+    // if success count is more than maxUpdateCount times, then disable this 
+    // var now = new Date();
+    // var offsetTime = now.getTime() - event.coords.timestamp;
+    // alert('offset time:' + offsetTime + ', timestamp:' + event.coords.timestamp);
+    // if( (offsetTime >= 0 && offsetTime <= maxOlderTime) || successCount >= config.maxUpdateCount /*|| Ti.Platform.osname == 'mobileweb'*/){
+    if( successCount >= config.maxUpdateCount /*|| Ti.Platform.osname == 'mobileweb'*/){
+      
+      // Ti.API.info('Coordination fetch location:' + JSON.stringify(location));
+      // alert('Coordination fetch location:' + JSON.stringify(location));
+      // alert('Coordination fetch coords:' + JSON.stringify(event.coords));
+      
+      currentCoords = null; // clear object.
+      successCount = 0;
+      
+      // note, locationSuccessCallback must not be undefined.
+      _.isFunction(config.locationSuccessCallback) && config.locationSuccessCallback(event);
+      
+      // if success happens, disable and remove android configuration. should after callback
+      locating.clear();
+      
+    }
   }
 };
 
 var onAndroidActivityDestroyed = function(event)
 {
-  alert('android destroy.');
+  // alert('android destroy');
   locating.disable();
 };
 
 var onAndroidActivityPaused = function(event)
 {
-  alert('android pause.');
+  // alert('android pause');
   locating.disable();
 };
 
 var onAndroidActivityResumed = function(event)
 {
-  alert('android resume.');
   locating.enable();
 };
 
@@ -97,9 +123,11 @@ var clearConfiguration = function(){
 };
   
 var addAndroidProviderAndRule = function(){
+  alert('and android provider');
   // 20130918: add by neil for manual settings of android geolocation
   if(Alloy.CFG.android){
     if(config.androidManual){
+      alert('manual true');
       /* Manual model settings for android. */
       Ti.Geolocation.Android.manualMode = true;
       var provider = {
@@ -126,6 +154,7 @@ var addAndroidProviderAndRule = function(){
       
     } else {
       Ti.Geolocation.Android.manualMode = false;
+      alert('manual false');
       if(config.accuracy == locating.accuracy.HEIGH){
         Ti.Geolocation.accuracy = Ti.Geolocation.ACCURACY_HIGH;
       } else {
@@ -167,7 +196,7 @@ var locating = {
   enable: function()
   {
     // Ti.API.info('enable locating:' + enabled);
-     alert('enable');
+     // alert('enable');
     if (!enabled)
     {
       enabled = true;
@@ -185,7 +214,7 @@ var locating = {
       // 20131015: created by neil to add timeout.
       setTimeout(function(){
         if(locating.currentStatus == locating.status.PENDING){
-          _.isFunction(config.locationErrorCallback) && config.locationErrorCallback("定位超时。");          
+          _.isFunction(config.locationErrorCallback) && config.locationErrorCallback({error:"定位超时。"});          
           locating.clear();
         }
       }, timeoutTime);
@@ -194,7 +223,7 @@ var locating = {
   },
   disable: function()
   {
-    alert('disable');
+    // alert('disable');
     locating.currentStatus = locating.status.DISABLED;
     // Ti.API.info('disable locating:' + enabled);
     if (enabled)
@@ -254,6 +283,7 @@ var locating = {
     {
       Ti.Geolocation.purpose = config.iosPurpose;
     }
+    alert('initialize');
     return locating;
   },
   checkProviderEnabled: function()
@@ -275,9 +305,9 @@ var defaultConfig = {
   maxUpdateCount: 2, // max success count of change listener.
   iosPurpose: '利用GPS自动获取您所在的位置，节省您宝贵的时间。',
   androidManual: false, // whether use android manual/simple
-  androidAccuracy: 200, // only use when androidManual = true, updates will called if accuracy is less than 100m.
+  androidAccuracy: 10000, // only use when androidManual = true, updates will called if accuracy is less than 100m.
   mobileWebLocationTimeout: 30000, // used for mobile web, timeout for geolocation,
-  accuracy: locating.accuracy.LOW, // default to locating.accuracy.HEIGH if androidManual = true, this setting will be ignored.
+  accuracy: locating.accuracy.ACCURACY_HIGH, // default to locating.accuracy.HEIGH if androidManual = true, this setting will be ignored.
   
   providerDisabledCallback: null, // callback function when provider service disabled. 
   locationErrorCallback: null, // error callback function when location listener fetch error.
