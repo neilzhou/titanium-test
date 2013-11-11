@@ -1,0 +1,9 @@
+
+".container" : {
+  
+}
+".locationTitle":{
+  font: {
+    fontWeight: 'bold'
+  }
+}

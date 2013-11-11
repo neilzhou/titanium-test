@@ -1,0 +1,58 @@
+".product-number":{
+    borderStyle:Ti.UI.INPUT_BORDERSTYLE_NONE,
+    color:'#333',
+    borderColor:'#999',
+    backgroundColor:'#fff',
+    width:'60',
+    height:'25',
+    paddingLeft:'5',
+    paddingRight:'5',
+    font:{
+        fontSize:'12'
+    },
+    textAlign:'center'
+},
+"#decreaseButton":{
+    width:'25',
+    height:'25',
+    backgroundImage:'/images/num-reduce.png',
+},
+"#increaseButton":{
+    width:'25',
+    height:'25',
+    backgroundImage:'/images/num-add.png',
+},
+"#widgetView":{
+  height:'28',  
+},
+"#widgetView[platform=android]":{
+  height:'35',  
+},
+".product-number[platform=android]":{
+    color:'#333',
+    borderColor:'#999',
+    borderWidth:'1',
+    backgroundColor:'#fff',
+    width:'60',
+    height:'32',
+    paddingLeft:'5',
+    paddingRight:'5',
+    font:{
+        fontSize:'12'
+    },
+    textAlign:'center',
+    verticalAlign:'center'
+},
+"#decreaseButton[platform=android]":{
+    width:'32',
+    height:'32',
+    backgroundImage:'/images/num-reduce.png',
+    backgroundFocusedImage:'/images/num-reduce-select.png',
+    backgroundDisabledImage:'/images/num-reduce-disable.png'
+},
+"#increaseButton[platform=android]":{
+    width:'32',
+    height:'32',
+    backgroundImage:'/images/num-add.png',
+    backgroundFocusedImage:'/images/num-add-select.png',
+}

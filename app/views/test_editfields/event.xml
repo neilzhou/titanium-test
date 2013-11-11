@@ -1,0 +1,8 @@
+<Alloy>
+	<ScrollView class="container" layout="vertical" contentHeight="auto">
+	  <TextField width="300" id="tf1"></TextField>
+	  <TextField width="300" id="tf2"></TextField>
+	  <TextField width="300" id="tf3"></TextField>
+	  <Button width="300" title="hide TextField" id="toggleButton"></Button>
+	</ScrollView>
+</Alloy>

@@ -1,0 +1,16 @@
+<Alloy>
+	<Window layout="compose">
+	  <View height="Ti.UI.FILL" bottom="100" layout="vertical" id="bodyView">
+	    <View height="Ti.UI.SIZE" id="headerView">
+	      <Label text="This is header" id="titleLabel"></Label>
+	    </View>
+	  </View>
+	  <View height="100" bottom="0" id="footerView">
+	    <Button title="Back" id="backButton" height="Ti.UI.SIZE" width="Ti.UI.SIZE"></Button>
+	  </View>
+	  <View height="Ti.UI.FILL" id="overlay">
+	    <View opacity="0.5" backgroundColor="white" ></View>
+	    <Label text="Loading, Please wait..."></Label>
+	  </View>
+	</Window>
+</Alloy>

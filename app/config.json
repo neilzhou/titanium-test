@@ -1,14 +1,21 @@
 {
-    "global": {},
-    "env:development": {},
-    "env:test": {},
-    "env:production": {},
-    "os:android": {},
-    "os:blackberry": {},
-    "os:ios": {},
-    "os:mobileweb": {},
-    "dependencies": {
-        "com.appcelerator.searchForBooks": "1.0",
-        "com.pullToUpdate.widget": "1.0"
-    }
+	"global": {}, 
+	"env:development": {}, 
+	"env:test": {}, 
+	"env:production": {}, 
+	"os:android": {
+	  "android": true,
+    "blackberry": false,
+    "ios": false,
+    "mobileweb": false,
+    "tizen": false
+	},
+	"os:blackberry": {},
+	"os:ios": {},
+	"os:mobileweb": {},
+	"dependencies": {
+    "com.muiNumInput.widget": "1.0",
+    "com.pullToUpdate.widget": "1.0",
+		"com.appcelerator.searchForBooks": "1.0"
+	}
 }

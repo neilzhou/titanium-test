@@ -1,0 +1,14 @@
+<Alloy>
+  <View class="container" layout="vertical">
+    <Label text="Location event results:" class="locationTitle"></Label>
+    <Label text="Location event status:" id="locationStatus"></Label>
+    <Label text="latitude:" id="latitudeLabel" />
+    <Label text="longitude:" id="longitudeLabel" />
+    <Label text="accuracy:" id="accuracyLabel" />
+    <Label text="timestamp:" id="timestampLabel" />
+    
+    <View height="Ti.UI.SIZE" top="20" layout="horizontal">
+      <Button title="Enable location" id="toggleEnable"></Button>
+    </View>
+  </View>
+</Alloy>
