@@ -1,0 +1,13 @@
+{
+	"id": "com.pullToUpdate.widget",
+	"name": "com.pullToUpdate.widget",
+	"description" : "This is the widget for pulling to update of scrollview on ios&android",
+	"author": "Neil.zhou",
+	"version": "1.0",
+	"copyright":"Copyright (c) 2012",
+	"license":"Public Domain",
+	"min-alloy-version": "1.0",
+	"min-titanium-version":"2.1",
+	"tags":"",
+	"platforms":"android,blackberry,ios,mobileweb,tizen"
+}
