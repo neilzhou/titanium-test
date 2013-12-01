@@ -1,0 +1,46 @@
+<Alloy>
+	<Window layout="compose" id="index">
+	  <View height="Ti.UI.FILL" bottom="100" layout="vertical" id="bodyView" backgroundColor="red">
+	    <View height="Ti.UI.SIZE" id="headerView">
+	      <Label text="This is header" id="titleLabel"></Label>
+	    </View>
+        <Label text="This is body" id="bodyLabel"></Label>
+	  </View>
+	  <View id="deliveryAreaPopup" visible="false"  width="160" height="Ti.UI.SIZE" bottom="100" backgroundColor="yellow" layout="vertical">
+        <Label class="popup-small-tag" height="16" verticalAlign="center">选择配送位置查看订单</Label>
+        <Label class="popup-small-tag" height="16" verticalAlign="center">选择配送位置查看订单</Label>
+        <Label class="popup-small-tag" height="16" verticalAlign="center">选择配送位置查看订单</Label>
+        <!-- the content will be generated in the controller.-->
+        <View height="1" left="10" right="10" top="5"></View>
+        <View class="delivery-area-line" height="Ti.UI.SIZE">
+	        <Label class="delivery-area-name">万达广场</Label>
+	        <Label class="delivery-area-num">3</Label>
+        </View>
+        <View height="1" left="10" right="10" ></View>
+
+        <View class="delivery-area-line" bottom="5" height="Ti.UI.SIZE">
+	        <Label class="delivery-area-name">国嘉华庭</Label>
+	        <Label class="delivery-area-num">1</Label>
+        </View>
+        
+    </View>
+
+	  <View height="Ti.UI.SIZE" bottom="0" id="footerView">
+	    
+	    <View id="expandMenu" height="Ti.UI.SIZE">
+	      <Label text="menu1" bottom="105"></Label>
+	      <Label text="menu2" bottom="70"></Label>
+	      <Label text="menu3" bottom="35"></Label>
+	    </View>
+	    
+	    <View id="simpleBottomBar" layout="horizontal" height="35" bottom="0">
+       <Button title="Back" id="backButton" height="Ti.UI.SIZE" width="Ti.UI.SIZE"></Button>
+       <Button title="menu" id="menuButton" height="Ti.UI.SIZE" width="Ti.UI.SIZE"></Button>
+      </View>
+	  </View>
+	  <View height="Ti.UI.FILL" id="overlay">
+	    <View opacity="0.5" backgroundColor="white" ></View>
+	    <Label text="Loading, Please wait..."></Label>
+	  </View>
+	</Window>
+</Alloy>

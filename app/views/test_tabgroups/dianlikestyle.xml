@@ -1,0 +1,19 @@
+<Alloy>
+  <TabGroup id="tabGroup">
+    <Tab id="Tab1" title="Tab 1" tintColor="red">
+      <Window id="win1" title="Tab window 1">
+        <Label text="I am label of window 1" id="label1" color="#999" />
+      </Window>
+    </Tab>
+    <Tab id="Tab2" title="Tab 2" tintColor="red">
+      <Window id="win2" title="Tab window 2">
+        <Label text="I am label of window 2" id="label2" color="#999" />
+      </Window>
+    </Tab>
+    <Tab id="Tab3" title="Tab 3">
+      <Window id="win3" title="Tab window 3">
+        <Label text="I am label of window 3" id="label3" color="#999" />
+      </Window>
+    </Tab>
+  </TabGroup>
+</Alloy>

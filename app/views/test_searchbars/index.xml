@@ -1,0 +1,5 @@
+<Alloy>
+	<Window id="win">
+	  <SearchBar id="search" barColor="#000" showCancel="true" height="43" top="0" />
+	</Window>
+</Alloy>

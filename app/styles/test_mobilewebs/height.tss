@@ -1,0 +1,14 @@
+"#expandMenu":{
+    // layout:'vertical',
+    right:'0',
+    bottom:'35',
+    width:'40%',
+    // backgroundColor:'#fff',
+    // borderWidth:'2',
+    // borderColor:'#2185c5',
+    // borderRadius:'4',
+},
+"#deliveryAreaPopup" : {
+	borderColor: '#2185c5',
+	borderWidth: 2
+}

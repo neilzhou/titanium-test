@@ -1,0 +1,5 @@
+<Alloy>
+	<View id="containerView" layout="vertical">
+		<Label text="This is test for mobileweb" />
+	</View>
+</Alloy>

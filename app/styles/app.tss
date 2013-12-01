@@ -72,3 +72,45 @@
   layout: 'horizontal',
   height: Ti.UI.SIZE
 }
+".input-box-wrap":{
+    left:'13',
+    right:'13',
+    height:'36',
+    borderWidth:'1',
+    borderColor:'#ccc',
+    borderRadius:'4'
+},
+".input-box-wrap[platform=android]":{
+    left:'13',
+    right:'13',
+    height:'40',
+    borderWidth:'1',
+    borderColor:'#ccc',
+    borderRadius:'8'
+},
+".input-box":{
+    left: 5,
+    right: 50,
+    height: 30,
+    borderWidth: 0,
+    borderColor:'transparent',
+    backgroundColor:'transparent', 
+    font:{
+        fontSize:'13'
+    },
+    color:'#333',
+    tintColor:'#999',
+},
+".input-box[platform=android]":{
+    left:'5',
+    right:'5',
+    height:'38',
+    borderWidth:'0',
+    borderColor:'transparent',
+    backgroundColor:'transparent',
+    font:{
+        fontSize:'13'
+    },
+    color:'#333',
+    tintColor:'#999',
+}

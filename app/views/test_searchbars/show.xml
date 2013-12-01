@@ -1,0 +1,13 @@
+<Alloy>
+	<View class="container">
+	  <SearchBar id="search" platform="!mobileweb" barColor="#000" height="43" top="0" showCancel="true"></SearchBar>
+	  <View height="Ti.UI.SIZE" id="searchView" platform="mobileweb">
+	    <View height="Ti.UI.SIZE" id="searchInput" width="Ti.UI.FILL" right="56" borderRadius="8">
+	      <ImageView image="/images/search-icon.png" width="18" height="18" left="8"></ImageView>
+	      <TextField left="36" right="36" width="Ti.UI.FILL" borderStyle="Titanium.UI.INPUT_BORDERSTYLE_NONE"></TextField>
+	      <ImageView image="/images/search-icon.png" width="18" height="18" right="8"></ImageView>
+	    </View>
+	    <Button title="取消" id="cancelButton" width="Ti.UI.SIZE" height="Ti.UI.SIZE" right="10"></Button>
+	  </View>
+	</View>
+</Alloy>

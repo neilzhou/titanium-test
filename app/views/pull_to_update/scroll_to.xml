@@ -1,0 +1,18 @@
+<Alloy>
+  <ScrollView id="scrollView" layout="vertical" contentHeight="auto" showVerticalScrollIndicator="true">
+    <View backgroundColor="yellow" height="60"></View>
+    <View backgroundColor="red" height="60"></View>
+    <View backgroundColor="yellow" height="60"></View>
+    <View backgroundColor="red" height="60"></View>
+    <View backgroundColor="yellow" height="60"></View>
+    <View backgroundColor="red" height="60"></View>
+    <View backgroundColor="yellow" height="60"></View>
+    <View backgroundColor="red" height="60"></View>
+    <View backgroundColor="yellow" height="60"></View>
+    <View backgroundColor="red" height="60"></View>
+    <View backgroundColor="yellow" height="60"></View>
+    <View backgroundColor="red" height="60"></View>
+    <View backgroundColor="yellow" height="60"></View>
+    <View backgroundColor="red" height="60"></View>
+  </ScrollView>
+</Alloy>

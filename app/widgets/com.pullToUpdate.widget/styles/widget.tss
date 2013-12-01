@@ -7,3 +7,6 @@
 	height: Ti.UI.SIZE,
 	width: Ti.UI.SIZE
 }
+"#arrowView": {
+  image: WPATH("/images/whiteArrow.png")
+}

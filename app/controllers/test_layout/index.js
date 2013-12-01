@@ -1,15 +1,15 @@
 
 $.headerRequire.on('click:back-home', function(e){
-	Ti.API.info('header require click back home e:' + e);
-	alert('header require click back home');
+	// Ti.API.info('header require click back home e:' + e);
+	// alert('header require click back home');
 	Alloy.createController('index').getView().open();
 	$.win.close();
 });
 
 var headerController = Alloy.createController('test_layout/header');
-console.dir(headerController);
+// console.dir(headerController);
 var headerView = headerController.getView();
-console.dir(headerView);
+// console.dir(headerView);
 $.win.add(headerView);
 
 Alloy.Globals.controller = $;

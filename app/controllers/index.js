@@ -31,9 +31,12 @@ insertBtn('Test Network', 'test_networks/index');
 insertBtn('Test windows', 'test_windows/index');
 insertBtn('Test UI elements', 'ui/index');
 insertBtn('Test require xml elements', 'test_requires/index');
-insertBtn('Test Pull to update for scroll view', 'pull_to_update/index');
+insertBtn('Test Pull to update for scroll view', 'layouts/index', {bodyUrl: 'pull_to_update/show'});
 insertBtn('Test textfield element', 'layouts/index', {bodyUrl: 'test_editfields/show'});
 insertBtn('Test tabgoups', 'tab_groups/index');
+insertBtn('Test search bars', 'layouts/index', {bodyUrl: 'test_searchbars/show'});
+insertBtn('Test mobileweb problems', 'layouts/index', {bodyUrl: 'test_mobilewebs/show'});
+insertBtn('Test tabgroups', 'layouts/index', {bodyUrl: 'test_tabgroups/show'});
 
 Ti.API.info('OS_IOS:' + OS_IOS);
 win.open();

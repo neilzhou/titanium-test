@@ -2,7 +2,8 @@
 	<ScrollView class="container" layout="vertical" contentHeight="auto">
 	  <TextField width="300" id="tf1"></TextField>
 	  <TextField width="300" id="tf2"></TextField>
-	  <TextField width="300" id="tf3"></TextField>
+	  <TextField width="300" id="tf3" height="Ti.UI.SIZE"></TextField>
+	  <TextField id="userPassword" height="Ti.UI.SIZE" class="input-box" passwordMask="true"/>
 	  <Button width="300" title="hide TextField" id="toggleButton"></Button>
 	</ScrollView>
 </Alloy>
