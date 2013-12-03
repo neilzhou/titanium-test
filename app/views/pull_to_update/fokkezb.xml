@@ -1,0 +1,25 @@
+<Alloy>
+  <TableView>
+    <Widget id="ptr" src="nl.fokkezb.pullToRefresh" onRelease="myLoader" />
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+  </TableView>
+</Alloy>

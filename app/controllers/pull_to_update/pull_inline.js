@@ -1,6 +1,6 @@
 var options = {
-  height: 65,
-  refreshPercent: 0,
+  height: 120,
+  refreshPercent: 0.05,
   scrollView: null,
   refreshCallback: null,
 };
@@ -20,6 +20,7 @@ var widget = {
   pulling: false,
   refresh: false,
   offset: 0,
+  isDragging: false,
   isResetingScrolling: false, // if reset scrollView to over pull view, add this to void reset scroll very slow on ios
   
   initElement: function(context){
@@ -34,7 +35,8 @@ var widget = {
     }
   },
   getPullViewHeight: function(){
-    return parseFloat(widget.pullView.height);
+    return parseFloat(options.height);
+    // return parseFloat(widget.pullView.height);
   },
   getRefreshLimitOffset: function(){
     return widget.getPullViewHeight() * options.refreshPercent;
@@ -63,14 +65,14 @@ var widget = {
   },
   // whether show pulling information, if user press up, then will cause refresh
   canShowPulling: function(){
-    return !widget.pulling && !widget.refresh && widget.isArrivalAtPulling();
+    return !widget.isPullViewHidden() && !widget.pulling && !widget.refresh && widget.isArrivalAtPulling();
   },
   // whether show pull notice infomation, but this will not cause refresh.
   canShowNoticing: function(){ 
-    return widget.pulling && !widget.refresh && widget.isArrivalAtNoticing();
+    return !widget.isPullViewHidden() && widget.pulling && !widget.refresh && widget.isArrivalAtNoticing();
   },
   canShowRefreshing: function(){
-    return widget.pulling && !widget.refresh && widget.isArrivalAtPulling();
+    return !widget.isPullViewHidden() && widget.pulling && !widget.refresh && widget.isArrivalAtPulling();
   },
   onScrollViewScrolled: function(e){
       // Ti.API.info('scroll e:' + JSON.stringify(e));
@@ -82,47 +84,43 @@ var widget = {
           widget.isResetingScrolling = false;
         }
       }
-
-      // fix the section of pullview is blank when user just scroll from bottom to top because of pullview is not visible..
-      if(widget.offset < pullViewHeight && !widget.isResetingScrolling && widget.isPullViewHidden()){
-        widget.isResetingScrolling = true;
-        widget.scrollView.scrollTo(0, pullViewHeight);
+      Ti.API.info('hidden:' + widget.isPullViewHidden() + ", offset:" + widget.offset + ", y:" + e.y + ", height:" + widget.getPullViewHeight() + "show pulling:" + widget.canShowPulling() + ", show notice:" + widget.canShowNoticing() + ", widget:" + JSON.stringify(widget));
+      if(widget.isPullViewHidden() && e.y < widget.getPullViewHeight() && widget.isDragging){
+        widget.pullView.visible = true;
+        if(OS_MOBILEWEB){
+          widget.pullView.height = options.height;
+        }
+      } else if(widget.canShowPulling()){
+        widget.pulling = true;
+        var t = Ti.UI.create2DMatrix();
+        t = t.rotate(-180);
+        widget.arrowView.animate({
+         transform: t,
+         duration: 180
+        });
+        widget.statusLabel.text = '松开刷新';
+      } else if(widget.canShowNoticing()){
+        widget.pulling = false;
+        var t = Ti.UI.create2DMatrix();
+        widget.arrowView.animate({
+         transform: t,
+         duration: 180
+        });
+        widget.statusLabel.text = '下拉刷新';
       }
-
-      // if pull view is not visible , it not need to do the codes below.
-      if(widget.isPullViewHidden()){
-        return ;
-      }
- 
-       if(widget.canShowPulling()){
-         widget.pulling = true;
-         var t = Ti.UI.create2DMatrix();
-         t = t.rotate(-180);
-         widget.arrowView.animate({
-           transform: t,
-           duration: 180
-         });
-         widget.statusLabel.text = '松开刷新';
-       } else if(widget.canShowNoticing()){
-         widget.pulling = false;
-         var t = Ti.UI.create2DMatrix();
-         widget.arrowView.animate({
-           transform: t,
-           duration: 180
-         });
-         widget.statusLabel.text = '下拉刷新';
-       }
   },
   // make pullview visible when dragstart.
   onDragstarted: function(e){
     Ti.API.info('scrollstart offset:' + widget.offset + ', e:' + JSON.stringify(e));
-    widget.pullView.visible = true;
-    if(OS_MOBILEWEB){
-      widget.pullView.height = options.height;
-    }
+    widget.isDragging = true;
+    // widget.pullView.visible = true;
+    // if(true || OS_MOBILEWEB){
+    //   widget.pullView.height = options.height;
+    // }
   },
   onDragended: function(e){
     Ti.API.info('drag/touch end widget:' + JSON.stringify(widget) + ' e:' + JSON.stringify(e));
+    widget.isDragging = false;
     var pullViewHeight = widget.getPullViewHeight();
     Ti.API.info('drag/touch end height:' + pullViewHeight + ", isatpullview:" + JSON.stringify(widget.isArrivalAtPullView()));
     if(widget.canShowRefreshing()){
@@ -141,7 +139,7 @@ var widget = {
 
     } else if(!widget.refresh && widget.isArrivalAtPullView()){
       // if not refresh and can see pullview currently in the screen, should set pullview back.
-      widget.scrollView.scrollTo(0, pullViewHeight);
+      widget.resetPullView();
     } else if(!widget.refresh && !widget.isArrivalAtPullView()){
       // fix the pullview still visible when user just scroll from bottom to top.
       widget.resetPullView();
@@ -151,6 +149,7 @@ var widget = {
     widget.refresh = false;
     widget.pullView.visible = false;
     widget.statusLabel.text = '下拉刷新';
+    Ti.API.info('reset pullview');
     if(OS_MOBILEWEB){
       widget.pullView.height = 0;
     } else {

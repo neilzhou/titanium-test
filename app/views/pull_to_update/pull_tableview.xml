@@ -1,0 +1,30 @@
+<Alloy>
+  <TableView id="tableView">
+    <HeaderPullView >
+        <View height="60" backgroundColor="yellow" layout="vertical">
+            <Label text="leeeee" color="red" />
+            <View height="20" backgroundColor="blue" />
+        </View>
+    </HeaderPullView>
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+    <TableViewRow title="hello" backgroundColor="yellow" height="50" />
+    <TableViewRow title="hello" backgroundColor="red" height="50" />  
+  </TableView>
+</Alloy>

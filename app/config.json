@@ -16,6 +16,7 @@
 	"dependencies": {
     "com.muiNumInput.widget": "1.0",
     "com.pullToUpdate.widget": "1.0",
+    "nl.fokkezb.pullToRefresh": "1.5",
 		"com.appcelerator.searchForBooks": "1.0"
 	}
 }

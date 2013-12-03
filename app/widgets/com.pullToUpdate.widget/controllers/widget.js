@@ -1,24 +1,163 @@
-/**
+/*
  * @history 
  *   20131015: created by neil for collection for add/remove
  */
 var options = {
   height: 65,
-  refreshPercent: 0,
-  scrollView: null,
+  refreshOffset: 0,
   refreshCallback: null,
+  scrollStrategy: 'table',
+  pullMessage: '下拉可以刷新...',
+  releaseMessage: '下拉可以刷新...',
+  refreshMessage: '加载中...',
+  scrollView: null
 };
 
 options = typeof arguments[0] == 'undefined' ? options : _.extend(options, arguments[0]);
 options = _.omit(options, ['id', "__parentSymbol"]); // remove the default system add property.
 
+if(options.scrollView == null){
+  options.scrollView = __parentSymbol;
+}
+
+var ScrollViewHeader = {
+  show: function(){},
+  hide: function(){},
+};
+
+var iOSTableViewHeader = {
+  isArrivalAtRefresh: function(offset){
+    return offset <= (options.refreshOffset - options.height);
+  },
+  isArrivalAtNotice: function(offset){
+    return ((!iOSTableViewHeader.isArrivalAtRefresh(offset)) && offset < options.refreshOffset)
+  },
+  showHeader: function(){
+    if(OS_IOS){
+      // when you're done, just reset
+      options.scrollView.setContentInsets({top:options.height},{animated:true});
+    } else {
+      options.scrollView.animate({
+        top: 0 - options.height,
+        duration: 250
+      });
+    }
+  },
+  hideHeader: function(){
+    if(OS_IOS){
+      options.scrollView.setContentInsets({top:0},{animated:true});
+    } else {
+      options.scrollView.animate({
+        top: 0,
+        duration: 250
+      });
+    }
+  },
+};
+
+if(OS_IOS && options.scrollStrategy == 'table'){
+  var scrollStrategy = iOSTableViewHeader;
+} else {
+  var scrollStrategy = ScrollViewHeader;
+}
+
+var pullHandler = {
+  offset: 0,
+  pulling: false,
+  reloading: false,
+  pullView: $.pullView,
+  arrow: $.arrowView,
+  statusLabel: $.statusLabel,
+  actInd: $.actInd,
+  initElement: function(context){
+    
+    context = _.omit(context, ['scrollView']); // remove the default system added property.
+    
+    // initilize options to object.
+    for(var key in context){
+      pullHandler.pullView[key] = context[key];
+    }
+
+    pullHandler.statusLabel.text = options.pullMessage;
+
+    return pullHandler;
+  },
+  hidePullView: function(){
+    // when you're done, just reset
+    scrollStrategy.hideHeader();
+    
+    pullHandler.reloading = false;
+    //lastUpdatedLabel.text = "Last Updated: "+formatDate();
+    pullHandler.statusLabel.text = options.pullMessage;
+    pullHandler.actInd.hide();
+    pullHandler.arrow.show();
+  },
+  onScrolled: function(e){
+    // if(e.y == null){
+    //   return;
+    // }
+    pullHandler.offset = e.contentOffset.y;
+
+    Ti.API.info('offset:' + pullHandler.offset + ", is arrival at refresh:" + scrollStrategy.isArrivalAtRefresh(pullHandler.offset) + ", is notice:" + scrollStrategy.isArrivalAtNotice(pullHandler.offset) + ", pulling: " + pullHandler.pulling + ", reloading:" + pullHandler.reloading);
+    if (scrollStrategy.isArrivalAtRefresh(pullHandler.offset) && !pullHandler.pulling && !pullHandler.reloading)
+    {
+      var t = Ti.UI.create2DMatrix();
+      t = t.rotate(-180);
+      pullHandler.pulling = true;
+      pullHandler.arrow.animate({transform:t,duration:180});
+      pullHandler.statusLabel.text = options.releaseMessage;
+    }
+    else if (pullHandler.pulling && scrollStrategy.isArrivalAtNotice(pullHandler.offset) && !pullHandler.reloading )
+    {
+      pullHandler.pulling = false;
+      var t = Ti.UI.create2DMatrix();
+      pullHandler.arrow.animate({transform:t,duration:180});
+      pullHandler.statusLabel.text = options.pullMessage;
+    }
+  },
+  onDragended: function(e){
+    if (pullHandler.pulling && !pullHandler.reloading)
+    {
+      pullHandler.reloading = true;
+      pullHandler.pulling = false;
+      pullHandler.arrow.hide();
+      pullHandler.actInd.show();
+      pullHandler.statusLabel.text = options.refreshMessage;
+
+      pullHandler.arrow.transform=Ti.UI.create2DMatrix();
+      scrollStrategy.showHeader();
+
+      setTimeout(function(){pullHandler.hidePullView()}, 2000);
+    }
+  },
+  addListener: function(){
+    if(OS_IOS){
+      var event1 = 'dragEnd';
+      if (Ti.version >= '3.0.0') {
+        event1 = 'dragend';
+      }  
+    } else {
+      var event1 = 'touchend';
+    }
+    
+    options.scrollView.addEventListener(event1, pullHandler.onDragended);
+    options.scrollView.addEventListener('scroll', pullHandler.onScrolled);
+  },
+  initialize: function(){
+    
+  }
+};
+pullHandler.initElement(options).addListener();
+$.initialize = pullHandler.initialize;
+// ----------------------old-----------------------
+/*
 var widget = {
   // element 
   pullView: $.pullView,
   arrowView: $.arrowView,
   statusLabel: $.statusLabel,
   actInd: $.actInd,
-  scrollView: null,
+  scrollView: __parentSymbol, // __parentSymbol is the parent view.
   
   // pulling variable usage.
   pulling: false,
@@ -80,8 +219,8 @@ var widget = {
       // Ti.API.info('scroll e:' + JSON.stringify(e));
       var pullViewHeight = widget.getPullViewHeight();
 
-      if (e.y != null) {
-        widget.offset = e.y;
+      if (typeof e.contentOffset != 'undefined' && e.contentOffset.y != null) {
+        widget.offset = e.contentOffset.y;
         if(widget.offset >= pullViewHeight){
           widget.isResetingScrolling = false;
         }
@@ -191,3 +330,4 @@ var widget = {
 };
 
 $.initialize = widget.initialize;
+*/
