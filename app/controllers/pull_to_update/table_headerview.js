@@ -1,7 +1,7 @@
 
 var show = {
   render: function(){
-    
+
     setTimeout(function(){
       $.trigger('render:finish', {});
     }, 1000);

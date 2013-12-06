@@ -10,6 +10,7 @@ var show = {
     show.insert('test scrollto', 'layouts/index', {bodyUrl: '/pull_to_update/scroll_to'});
     show.insert('test tweetie_like', 'pull_to_update/tweetie_like');
     show.insert('test fokkezb like', 'layouts/index', {bodyUrl: '/pull_to_update/fokkezb'});
+    show.insert('test android table header view', 'layouts/index', {bodyUrl: '/pull_to_update/table_headerview'});
     
     setTimeout(function(){
       $.trigger('render:finish', {});

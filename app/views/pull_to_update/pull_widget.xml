@@ -1,6 +1,6 @@
 <Alloy>
 <ScrollView id="scrollView" layout="vertical" contentHeight="auto" showVerticalScrollIndicator="true" width="Ti.UI.FILL">
-  <Widget src="com.pullToUpdate.widget" id="pullToUpdate" />
+  <Widget src="com.pullToUpdate.widget" id="pullToUpdate" scrollStrategy="scrollView"/>
 
  
 

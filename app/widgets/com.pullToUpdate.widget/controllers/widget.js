@@ -8,9 +8,10 @@ var options = {
   refreshCallback: null,
   scrollStrategy: 'table',
   pullMessage: '下拉可以刷新...',
-  releaseMessage: '下拉可以刷新...',
+  releaseMessage: '松开可以刷新...',
   refreshMessage: '加载中...',
-  scrollView: null
+  scrollView: null,
+  refreshCallback: null,
 };
 
 options = typeof arguments[0] == 'undefined' ? options : _.extend(options, arguments[0]);
@@ -20,314 +21,379 @@ if(options.scrollView == null){
   options.scrollView = __parentSymbol;
 }
 
+var callRefresh = function(e){
+  if(_.isFunction(options.refreshCallback)){
+    options.refreshCallback(e, scrollStrategy.hidePullView);
+  } else {
+    setTimeout(function(){scrollStrategy.hidePullView()}, 2000);
+  }
+};
+
 var ScrollViewHeader = {
-  show: function(){},
-  hide: function(){},
+  offset: 0,
+  heightPX: 0,
+  dragging: false,
+  isTableView: function(){
+    return options.scrollStrategy == 'table';
+  },
+  isArrivalAtRefresh: function(){
+    return ScrollViewHeader.offset <= options.refreshOffset;
+  },
+  isArrivalAtNotice: function(){
+    return !ScrollViewHeader.isArrivalAtRefresh() && ScrollViewHeader.offset < options.height;
+  },
+  showHeader: function(){
+
+  },
+  hidePullView: function(){
+
+    StatusController.finishRefresh();
+
+    UIController.hidePullView();
+
+    var offset = ScrollViewHeader.offset;
+    if(offset >= options.height){
+      UIController.pullView.height = 0;
+      options.scrollView.contentOffset = {x:0, y:(offset - ScrollViewHeader.heightPX)};
+    } else {
+      UIController.pullView.height = 0;
+      if(ScrollViewHeader.isTableView()){
+        options.scrollView.scrollToTop(0);
+      } else {
+        // options.scrollView.scrollTo(0, 0);
+         options.scrollView.contentOffset = {x:0, y:0};
+      }
+    }
+
+  },
+  onScrolled: function(e){
+    // Ti.API.info('event:' + JSON.stringify(e));
+    if(e.y === null){
+      return;
+    }
+    ScrollViewHeader.offset = e.y; 
+    
+    // Ti.API.info('height:' + UIController.pullView.height + ", options height: " + options.height + ", isin:" + (UIController.pullView.height == 0 && ScrollViewHeader.offset < -5) + ", offset:" + ScrollViewHeader.offset);
+    if(UIController.pullView.height == 0 && ScrollViewHeader.offset < -5 && ScrollViewHeader.dragging){
+      UIController.pullView.height = options.height;
+      // 20131203: added by neil to reset the scrollview offset.
+      // options.scrollView.contentOffset = {x:0, y:(ScrollViewHeader.offset + ScrollViewHeader.heightPX)};
+      // options.scrollView.scrollTo(0, UIController.pullView.height);
+      return;
+    }
+    if(UIController.pullView.height == 0){
+      return ; // if not visible, not pull & refresh.
+    }
+
+    // Ti.API.info('offset:' + ScrollViewHeader.offset + ", is arrival at refresh:" + ScrollViewHeader.isArrivalAtRefresh() + ", is notice:" + ScrollViewHeader.isArrivalAtNotice() + ", pulling: " + StatusController.pulling + ", reloading:" + StatusController.reloading);
+    if (StatusController.isNotPullingAndRefresh() && ScrollViewHeader.isArrivalAtRefresh())
+    {
+      StatusController.setPulling();
+      UIController.showRelease();
+    }
+    else if (StatusController.isPulling() && ScrollViewHeader.isArrivalAtNotice())
+    {
+      StatusController.setNoticing();
+      UIController.showPull();
+    }
+  },
+  onDragended: function(e){
+    // Ti.API.info('drag end e:' + JSON.stringify(e));
+    ScrollViewHeader.dragging = false;
+    if (StatusController.isPulling())
+    {
+      StatusController.setRefreshing();
+      
+      UIController.showRefresh();
+      // ScrollViewHeader.showHeader();
+
+      callRefresh(e);
+    } else if(UIController.pullView.height != 0 && ! StatusController.isRefreshing()) {
+      ScrollViewHeader.hidePullView();
+    }
+  },
+  onDragstarted: function(e){
+    ScrollViewHeader.dragging = true;
+    if(UIController.pullView.height == 0 &&  ScrollViewHeader.dragging){
+      var offset = ScrollViewHeader.offset;
+      UIController.pullView.height = options.height;
+      // 20131203: added by neil to reset the scrollview offset.
+      options.scrollView.contentOffset = {x:0, y:(offset + ScrollViewHeader.heightPX)};
+      // options.scrollView.scrollTo(0, UIController.pullView.height);
+      return;
+    }
+  },
+  addListener: function(){
+    // if(options.scrollStrategy == 'table'){
+    //   var event0 = 'scrollend';
+    //   options.scrollView.addEventListener(event0, ScrollViewHeader.onDragended);
+    // }
+
+    if(OS_IOS){
+      var event1 = 'dragEnd';
+      var event2 = 'dragStart';
+      if (Ti.version >= '3.0.0') {
+        event1 = 'dragend';
+        event2 = 'dragstart';
+      }    
+    } else {
+      var event1 = 'touchend';
+      var event2 = 'touchstart';
+    }  
+    options.scrollView.addEventListener(event1, ScrollViewHeader.onDragended);
+    options.scrollView.addEventListener(event2, ScrollViewHeader.onDragstarted);
+    options.scrollView.addEventListener('scroll', ScrollViewHeader.onScrolled);
+  },
+  initialize: function(){
+    // var tmp = _.extend(options, {height: 0});
+    UIController.init(options);
+    UIController.pullView.height = 0;
+    ScrollViewHeader.addListener();
+
+    // options.scrollView.scrollTo(0, UIController.pullView.height);
+    ScrollViewHeader.heightPX = require('alloy/measurement').dpToPX(options.height);
+    // options.scrollView.contentOffset = {x:0, y: ScrollViewHeader.heightPX};
+      
+  }
+};
+
+// because user experience of setting contentOffset is very bad, so use another resolution.
+var iOSScrollViewHeader = {
+  offset: 0,
+  dragging: false,
+  resetingScroll: false,
+  isArrivalAtRefresh: function(){
+    return iOSScrollViewHeader.offset <= options.refreshOffset;
+  },
+  isArrivalAtNotice: function(){
+    return !iOSScrollViewHeader.isArrivalAtRefresh() && iOSScrollViewHeader.offset < options.height;
+  },
+  showHeader: function(){
+
+  },
+  hidePullView: function(){
+
+    StatusController.finishRefresh();
+
+    UIController.hidePullView();
+    // only when pull view is viewed, need to scroll to not visible.
+    if(iOSScrollViewHeader.offset < options.height){
+      iOSScrollViewHeader.resetingScroll = true;
+      options.scrollView.scrollTo(0, options.height);
+    }
+  },
+  onScrolled: function(e){
+    // Ti.API.info('event:' + JSON.stringify(e));
+    if(e.y === null){
+      return;
+    }
+    iOSScrollViewHeader.offset = e.y; 
+    
+    // if not reseting and not draging and not refresh, then reset.
+    if(iOSScrollViewHeader.dragging == false && iOSScrollViewHeader.resetingScroll == false && !StatusController.isRefreshing()){
+      iOSScrollViewHeader.hidePullView();
+      return;
+    } else if (StatusController.isNotPullingAndRefresh() && iOSScrollViewHeader.isArrivalAtRefresh())
+    {
+      StatusController.setPulling();
+      UIController.showRelease();
+    }
+    else if (StatusController.isPulling() && iOSScrollViewHeader.isArrivalAtNotice())
+    {
+      StatusController.setNoticing();
+      UIController.showPull();
+    }
+  },
+  onDragended: function(e){
+    // Ti.API.info('drag end e:' + JSON.stringify(e));
+    iOSScrollViewHeader.dragging = false;
+    if (StatusController.isPulling())
+    {
+      StatusController.setRefreshing();
+      
+      UIController.showRefresh();
+
+      callRefresh(e);
+    } else if(! StatusController.isRefreshing()) {
+      iOSScrollViewHeader.hidePullView();
+    }
+  },
+  onDragstarted: function(e){
+    iOSScrollViewHeader.dragging = true;
+    iOSScrollViewHeader.resetingScroll = false;
+  },
+  addListener: function(){
+    var event1 = 'dragEnd';
+    var event2 = 'dragStart';
+    if (Ti.version >= '3.0.0') {
+      event1 = 'dragend';
+      event2 = 'dragstart';
+    }    
+    options.scrollView.addEventListener(event1, iOSScrollViewHeader.onDragended);
+    options.scrollView.addEventListener(event2, iOSScrollViewHeader.onDragstarted);
+    options.scrollView.addEventListener('scroll', iOSScrollViewHeader.onScrolled);
+  },
+  initialize: function(){
+    UIController.init(options);
+    iOSScrollViewHeader.addListener();
+    
+    iOSScrollViewHeader.offset = options.height;
+    // because eight setContentOffset or scrollTo not work when init just after appending, so need to add a interval.
+    var time1 = setInterval(function(){
+      if(iOSScrollViewHeader.offset < options.height){
+        clearInterval(time1);
+      } else {
+        options.scrollView.setContentOffset({x:0, y: options.height}, {animated: false });
+      }
+    }, 100);
+  }
 };
 
 var iOSTableViewHeader = {
-  isArrivalAtRefresh: function(offset){
-    return offset <= (options.refreshOffset - options.height);
+  offset: 0,
+  isArrivalAtRefresh: function(){
+    return iOSTableViewHeader.offset <= (options.refreshOffset - options.height);
   },
-  isArrivalAtNotice: function(offset){
-    return ((!iOSTableViewHeader.isArrivalAtRefresh(offset)) && offset < options.refreshOffset)
+  isArrivalAtNotice: function(){
+    return ((!iOSTableViewHeader.isArrivalAtRefresh()) && iOSTableViewHeader.offset < 0)
   },
   showHeader: function(){
-    if(OS_IOS){
-      // when you're done, just reset
-      options.scrollView.setContentInsets({top:options.height},{animated:true});
-    } else {
-      options.scrollView.animate({
-        top: 0 - options.height,
-        duration: 250
-      });
-    }
+    // when you're done, just reset
+    options.scrollView.setContentInsets({top:options.height},{animated:true});
   },
   hideHeader: function(){
-    if(OS_IOS){
-      options.scrollView.setContentInsets({top:0},{animated:true});
-    } else {
-      options.scrollView.animate({
-        top: 0,
-        duration: 250
-      });
-    }
-  },
-};
-
-if(OS_IOS && options.scrollStrategy == 'table'){
-  var scrollStrategy = iOSTableViewHeader;
-} else {
-  var scrollStrategy = ScrollViewHeader;
-}
-
-var pullHandler = {
-  offset: 0,
-  pulling: false,
-  reloading: false,
-  pullView: $.pullView,
-  arrow: $.arrowView,
-  statusLabel: $.statusLabel,
-  actInd: $.actInd,
-  initElement: function(context){
-    
-    context = _.omit(context, ['scrollView']); // remove the default system added property.
-    
-    // initilize options to object.
-    for(var key in context){
-      pullHandler.pullView[key] = context[key];
-    }
-
-    pullHandler.statusLabel.text = options.pullMessage;
-
-    return pullHandler;
+    options.scrollView.setContentInsets({top:0},{animated:true});
   },
   hidePullView: function(){
     // when you're done, just reset
-    scrollStrategy.hideHeader();
+    iOSTableViewHeader.hideHeader();
     
-    pullHandler.reloading = false;
-    //lastUpdatedLabel.text = "Last Updated: "+formatDate();
-    pullHandler.statusLabel.text = options.pullMessage;
-    pullHandler.actInd.hide();
-    pullHandler.arrow.show();
+    StatusController.finishRefresh();
+
+    UIController.hidePullView();
   },
   onScrolled: function(e){
     // if(e.y == null){
     //   return;
     // }
-    pullHandler.offset = e.contentOffset.y;
+    iOSTableViewHeader.offset = e.contentOffset.y;
 
-    Ti.API.info('offset:' + pullHandler.offset + ", is arrival at refresh:" + scrollStrategy.isArrivalAtRefresh(pullHandler.offset) + ", is notice:" + scrollStrategy.isArrivalAtNotice(pullHandler.offset) + ", pulling: " + pullHandler.pulling + ", reloading:" + pullHandler.reloading);
-    if (scrollStrategy.isArrivalAtRefresh(pullHandler.offset) && !pullHandler.pulling && !pullHandler.reloading)
+    // Ti.API.info('offset:' + iOSTableViewHeader.offset + ", is arrival at refresh:" + iOSTableViewHeader.isArrivalAtRefresh(pullHandler.offset) + ", is notice:" + iOSTableViewHeader.isArrivalAtNotice(pullHandler.offset) + ", pulling: " + StatusController.pulling + ", reloading:" + StatusController.reloading);
+    if (StatusController.isNotPullingAndRefresh() && iOSTableViewHeader.isArrivalAtRefresh())
     {
-      var t = Ti.UI.create2DMatrix();
-      t = t.rotate(-180);
-      pullHandler.pulling = true;
-      pullHandler.arrow.animate({transform:t,duration:180});
-      pullHandler.statusLabel.text = options.releaseMessage;
+      StatusController.setPulling();
+      UIController.showRelease();
     }
-    else if (pullHandler.pulling && scrollStrategy.isArrivalAtNotice(pullHandler.offset) && !pullHandler.reloading )
+    else if (StatusController.isPulling() && iOSTableViewHeader.isArrivalAtNotice())
     {
-      pullHandler.pulling = false;
-      var t = Ti.UI.create2DMatrix();
-      pullHandler.arrow.animate({transform:t,duration:180});
-      pullHandler.statusLabel.text = options.pullMessage;
+      StatusController.setNoticing();
+      UIController.showPull();
     }
   },
   onDragended: function(e){
-    if (pullHandler.pulling && !pullHandler.reloading)
+    if (StatusController.isPulling())
     {
-      pullHandler.reloading = true;
-      pullHandler.pulling = false;
-      pullHandler.arrow.hide();
-      pullHandler.actInd.show();
-      pullHandler.statusLabel.text = options.refreshMessage;
+      StatusController.setRefreshing();
+      
+      UIController.showRefresh();
+      iOSTableViewHeader.showHeader();
 
-      pullHandler.arrow.transform=Ti.UI.create2DMatrix();
-      scrollStrategy.showHeader();
-
-      setTimeout(function(){pullHandler.hidePullView()}, 2000);
+      callRefresh(e);
     }
   },
   addListener: function(){
-    if(OS_IOS){
-      var event1 = 'dragEnd';
-      if (Ti.version >= '3.0.0') {
-        event1 = 'dragend';
-      }  
-    } else {
-      var event1 = 'touchend';
-    }
+    var event1 = 'dragEnd';
+    if (Ti.version >= '3.0.0') {
+      event1 = 'dragend';
+    }  
     
-    options.scrollView.addEventListener(event1, pullHandler.onDragended);
-    options.scrollView.addEventListener('scroll', pullHandler.onScrolled);
+    options.scrollView.addEventListener(event1, iOSTableViewHeader.onDragended);
+    options.scrollView.addEventListener('scroll', iOSTableViewHeader.onScrolled);
   },
   initialize: function(){
-    
+    UIController.init(options);
+    iOSTableViewHeader.addListener();
   }
 };
-pullHandler.initElement(options).addListener();
-$.initialize = pullHandler.initialize;
-// ----------------------old-----------------------
-/*
-var widget = {
-  // element 
+
+if(OS_IOS && options.scrollStrategy == 'table'){
+  var scrollStrategy = iOSTableViewHeader;
+} else if(OS_IOS){
+  var scrollStrategy = iOSScrollViewHeader;
+} else {
+  var scrollStrategy = ScrollViewHeader;
+}
+
+var UIController = {
   pullView: $.pullView,
-  arrowView: $.arrowView,
+  arrow: $.arrowView,
   statusLabel: $.statusLabel,
   actInd: $.actInd,
-  scrollView: __parentSymbol, // __parentSymbol is the parent view.
-  
-  // pulling variable usage.
-  pulling: false,
-  refresh: false,
-  offset: 0,
-  isResetingScrolling: false, // if reset scrollView to over pull view, add this to void reset scroll very slow on ios
-  
-  initElement: function(context){
-    
-    widget.scrollView = context.scrollView;
-    
+  init: function(context){
     context = _.omit(context, ['scrollView']); // remove the default system added property.
     
     // initilize options to object.
     for(var key in context){
-      widget.pullView[key] = context[key];
+      UIController.pullView[key] = context[key];
     }
-  },
-  getPullViewHeight: function(){
-    return parseFloat(widget.pullView.height);
-  },
-  getRefreshLimitOffset: function(){
-    return widget.getPullViewHeight() * options.refreshPercent;
-  },
-  hidePullViewFirstly: function(){
-    widget.resetPullView();
-    // var init = setInterval(function(e){
-    //    Ti.API.info('init offset:' + widget.offset);
-    //     if (widget.offset != 0) {
-    //       clearInterval(init);
-    //     }
-        // widget.scrollView.scrollTo(0,widget.getPullViewHeight());
-    // },100);
-  },
-  isPullViewHidden: function(){
-    return widget.pullView.visible == false || widget.pullView.visible == 'false';
-  },
-  isArrivalAtPulling: function(){
-    return widget.offset <= widget.getRefreshLimitOffset();
-  },
-  isArrivalAtNoticing: function(){
-    return !widget.isArrivalAtPulling() && widget.isArrivalAtPullView();
-  },
-  isArrivalAtPullView: function(){
-    return widget.offset < widget.getPullViewHeight();
-  },
-  // whether show pulling information, if user press up, then will cause refresh
-  canShowPulling: function(){
-    return !widget.pulling && !widget.refresh && widget.isArrivalAtPulling();
-  },
-  // whether show pull notice infomation, but this will not cause refresh.
-  canShowNoticing: function(){ 
-    return widget.pulling && !widget.refresh && widget.isArrivalAtNoticing();
-  },
-  canShowRefreshing: function(){
-    return widget.pulling && !widget.refresh && widget.isArrivalAtPulling();
-  },
-  onScrollViewScrolled: function(e){
-      // Ti.API.info('scroll e:' + JSON.stringify(e));
-      var pullViewHeight = widget.getPullViewHeight();
-
-      if (typeof e.contentOffset != 'undefined' && e.contentOffset.y != null) {
-        widget.offset = e.contentOffset.y;
-        if(widget.offset >= pullViewHeight){
-          widget.isResetingScrolling = false;
-        }
-      }
-
-      // fix the section of pullview is blank when user just scroll from bottom to top because of pullview is not visible..
-      if(widget.offset < pullViewHeight && !widget.isResetingScrolling && widget.isPullViewHidden()){
-        widget.isResetingScrolling = true;
-        widget.scrollView.scrollTo(0, pullViewHeight);
-      }
-
-      // if pull view is not visible , it not need to do the codes below.
-      if(widget.isPullViewHidden()){
-        return ;
-      }
- 
-       if(widget.canShowPulling()){
-         widget.pulling = true;
-         var t = Ti.UI.create2DMatrix();
-         t = t.rotate(-180);
-         widget.arrowView.animate({
-           transform: t,
-           duration: 180
-         });
-         widget.statusLabel.text = '松开刷新';
-       } else if(widget.canShowNoticing()){
-         widget.pulling = false;
-         var t = Ti.UI.create2DMatrix();
-         widget.arrowView.animate({
-           transform: t,
-           duration: 180
-         });
-         widget.statusLabel.text = '下拉刷新';
-       }
-  },
-  // make pullview visible when dragstart.
-  onDragstarted: function(e){
-    Ti.API.info('scrollstart offset:' + widget.offset + ', e:' + JSON.stringify(e));
-    widget.pullView.visible = true;
-    if(OS_MOBILEWEB){
-      widget.pullView.height = options.height;
-    }
-  },
-  onDragended: function(e){
-    Ti.API.info('drag/touch end widget:' + JSON.stringify(widget) + ' e:' + JSON.stringify(e));
-    var pullViewHeight = widget.getPullViewHeight();
-    Ti.API.info('drag/touch end height:' + pullViewHeight + ", isatpullview:" + JSON.stringify(widget.isArrivalAtPullView()));
-    if(widget.canShowRefreshing()){
-      widget.refresh = true;
-      widget.pulling = false;
-      widget.statusLabel.text = '正在刷新';
-      
-      // TODO need to refresh the function.
-      if(_.isFunction(options.refreshCallback)){
-        options.refreshCallback(e, widget.resetPullView);
-      } else {
-        setTimeout(function(){
-          widget.resetPullView();
-        }, 2000);
-      }
-
-    } else if(!widget.refresh && widget.isArrivalAtPullView()){
-      // if not refresh and can see pullview currently in the screen, should set pullview back.
-      widget.scrollView.scrollTo(0, pullViewHeight);
-    } else if(!widget.refresh && !widget.isArrivalAtPullView()){
-      // fix the pullview still visible when user just scroll from bottom to top.
-      widget.resetPullView();
-    }
-  },
-  resetPullView: function(){
-    widget.refresh = false;
-    widget.pullView.visible = false;
-    widget.statusLabel.text = '下拉刷新';
-    if(OS_MOBILEWEB){
-      widget.pullView.height = 0;
+    UIController.statusLabel.text = options.pullMessage;
+    if(OS_IOS){
+      UIController.actInd.style = Ti.UI.iPhone.ActivityIndicatorStyle.DARK;
     } else {
-      widget.arrowView.transform = Ti.UI.create2DMatrix();
-      widget.scrollView.scrollTo(0, widget.getPullViewHeight());  
-    }
-    
-  },
-  addListenerEvent: function(){
-    widget.scrollView.addEventListener('scroll', widget.onScrollViewScrolled);
-
-    var event0 = 'dragstart';
-    if (OS_ANDROID) {
-      event0 = 'touchstart';
-    }
-    widget.scrollView.addEventListener(event0, widget.onDragstarted);
-
-    var event1 = 'dragend';
-    if (OS_ANDROID) {
-      event1 = 'touchend';
+      UIController.actInd.style = Ti.UI.ActivityIndicatorStyle.DARK;
     }
 
-    widget.scrollView.addEventListener(event1, widget.onDragended);
   },
-  initialize: function(op){
-    Ti.API.info('mobileweb:' + JSON.stringify(OS_MOBILEWEB));
-    if(typeof op != 'undefined'){
-      options = _.extend(options,op);
-    }
-    widget.initElement(options);
-    widget.hidePullViewFirstly();
-    widget.addListenerEvent();
+  hidePullView: function(){
+    //lastUpdatedLabel.text = "Last Updated: "+formatDate();
+    UIController.statusLabel.text = options.pullMessage;
+    UIController.actInd.hide();
+    UIController.arrow.height = Ti.UI.SIZE;
+    UIController.arrow.transform=Ti.UI.create2DMatrix();
   },
+  showRelease: function(){
+    var t = Ti.UI.create2DMatrix();
+    t = t.rotate(-180);
+    UIController.arrow.animate({transform:t,duration:180});
+    UIController.statusLabel.text = options.releaseMessage;
+  },
+  showPull: function(){
+    var t = Ti.UI.create2DMatrix();
+    UIController.arrow.animate({transform:t,duration:180});
+    UIController.statusLabel.text = options.pullMessage;
+  },
+  showRefresh: function(){
+    UIController.arrow.height = 0;
+    UIController.actInd.show();
+    UIController.statusLabel.text = options.refreshMessage;
+  }
 };
 
-$.initialize = widget.initialize;
-*/
+var StatusController = {
+  pulling: false,
+  reloading: false,
+  setRefreshing: function(){
+    StatusController.reloading = true;
+    StatusController.pulling = false;
+  },
+  finishRefresh: function(){
+    StatusController.reloading = false;
+  },
+  setPulling: function(){ // the status when notice user release to update
+    StatusController.pulling = true;
+  },
+  setNoticing: function(){ // the status when notice user pull to update
+    StatusController.pulling = false;
+  },
+  isNotPullingAndRefresh: function(){ // whether can set pulling status
+    return !StatusController.pulling && !StatusController.reloading;
+  },
+  isPulling: function(){ // whether can set notice & refresh status
+    return StatusController.pulling && !StatusController.reloading;
+  },
+  isRefreshing: function(){
+    return StatusController.reloading;
+  }
+};
+
+scrollStrategy.initialize();

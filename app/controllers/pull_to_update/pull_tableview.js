@@ -14,7 +14,6 @@ var show = {
     } else {
       $.tableView.headerView = widget.getView();  
     }
-    widget.initialize();
   },
 };
 

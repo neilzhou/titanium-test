@@ -1,5 +1,8 @@
 <Alloy>
   <TableView id="tableView" backgroundColor="#e2e7ed">
+    <HeaderView>
+        <View height="60" backgroundColor="red" />
+    </HeaderView>
     <TableViewRow title="hello" backgroundColor="yellow" height="50" />
     <TableViewRow title="hello" backgroundColor="red" height="50" />  
     <TableViewRow title="hello" backgroundColor="yellow" height="50" />

@@ -1,3 +1,40 @@
-"#arrowView": {
-  image: WPATH("/images/whiteArrow.png")
+"Label": {
+  color: '#333',
+  font: {
+    fontSize: 12,
+    fontWeight: 'bold'
+  },
+  height: Ti.UI.SIZE,
+  width: Ti.UI.SIZE
+},
+".pullview": {
+  backgroundColor:"#eee", 
+  height:"65",
+  visible: true,
+  width:Ti.UI.FILL
+},
+".arrow": {
+  image: WPATH("/images/arrow-down.png"),
+  width:26,
+  height:Ti.UI.SIZE, 
+  left: '20%',
+  bottom:13
+},
+".status": {
+  bottom:20,
+  height:Ti.UI.SIZE,
+  width:Ti.UI.SIZE,
+  color:"#333",
+  textAlign:"center"
+},
+".activity-indicator":{
+  left:20,
+  bottom:13,
+  width:30,
+  height:30
+},
+".bottom-border": {
+  backgroundColor:"#2185c5",
+  height:1,
+  bottom:0
 }
